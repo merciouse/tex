@@ -10,12 +10,23 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Compile LaTeX to PDF
+      - name: Restore TeX Live cache
+        uses: actions/cache@v4
+        id: texcache
+        with:
+          path: /usr/local/texlive
+          key: texlive-${{ runner.os }}-${{ hashFiles('**/*.tex') }}
+          restore-keys: |
+            texlive-${{ runner.os }}-
+
+      - name: Build PDF
         uses: KAnggara75/tex2pdf@0.1
         with:
-          output_dir: ./
+          output_dir: ./output
           main_latex_file: main.tex
-          ctan_packages: ""
-          toc: false
 
-          
+      - name: Upload PDF
+        uses: actions/upload-artifact@v4
+        with:
+          name: pdf
+          path: ./output/main.pdf
