@@ -1,0 +1,21 @@
+name: tex2pdf
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Compile LaTeX to PDF
+        uses: KAnggara75/tex2pdf@0.1
+        with:
+          output_dir: ./output
+          main_latex_file: main.tex
+          ctan_packages: ""
+          toc: false
+
+          
